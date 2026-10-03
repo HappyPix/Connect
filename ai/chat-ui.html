@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Happy Guru — Widget Preview</title>
+<meta name="robots" content="noindex, nofollow">
+
+<!--
+  This page is a STANDALONE PREVIEW / TEST HARNESS for the AI Happy
+  Guru chat widget. It is not linked from the main site — it exists
+  so you (or any developer) can open /ai/chat-ui.html directly and
+  see the widget working on its own, without loading the whole
+  AI Happy Pixels homepage.
+
+  The widget itself is 100% self-injecting: chat-widget.js builds
+  its own markup and appends it to <body>. This file just provides
+  a nice-looking backdrop and loads the three widget files in the
+  correct order.
+-->
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{
+    font-family:'Manrope','Segoe UI',system-ui,-apple-system,sans-serif;
+    background:radial-gradient(circle at 20% 10%,#241a5c 0%,#0c0f2e 45%,#080615 100%);
+    color:#f6f3ea;
+    min-height:100vh;
+    display:flex;align-items:center;justify-content:center;
+    padding:40px 20px;
+    text-align:center;
+  }
+  .preview-card{max-width:560px;}
+  .preview-card h1{
+    font-size:clamp(26px,4vw,38px);font-weight:800;margin-bottom:14px;
+    background:linear-gradient(120deg,#e9c46a,#ffd97a,#e9c46a);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .preview-card p{color:#b9b6d6;line-height:1.7;font-size:15px;margin-bottom:10px;}
+  .preview-card code{
+    background:rgba(255,255,255,.06);border:1px solid rgba(233,196,106,.25);
+    padding:2px 8px;border-radius:6px;font-size:13px;color:#ffd97a;
+  }
+  .preview-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(255,255,255,.06);border:1px solid rgba(233,196,106,.25);
+    padding:8px 16px;border-radius:30px;font-size:13px;color:#e9c46a;margin-bottom:22px;
+  }
+  .preview-badge .dot{width:7px;height:7px;border-radius:50%;background:#7fd9a0;box-shadow:0 0 10px #7fd9a0;}
+  .arrow-hint{
+    position:fixed;right:100px;bottom:40px;font-size:13px;color:#e9c46a;
+    display:flex;align-items:center;gap:8px;opacity:.85;
+  }
+  @media (max-width:560px){ .arrow-hint{display:none;} }
+</style>
+
+<!-- 1. Widget stylesheet -->
+<link rel="stylesheet" href="chat-widget.css">
+</head>
+<body>
+
+  <div class="preview-card">
+    <div class="preview-badge"><span class="dot"></span> Widget preview harness</div>
+    <h1>AI Happy Guru</h1>
+    <p>This page loads <code>chat-widget.css</code>, <code>config.js</code> and <code>chat-widget.js</code> exactly as they run on the real site — nothing else.</p>
+    <p>Click the floating button in the bottom-right corner to open the assistant. Try the quick action buttons, the language / theme switchers, the mic button and the Prompt Generator.</p>
+  </div>
+
+  <div class="arrow-hint">Click here → 👉</div>
+
+  <!-- 2. Config (edit this file to re-brand / add links / plug in Gemini) -->
+  <script src="config.js"></script>
+  <!-- 3. Widget engine (self-injecting, no other markup required) -->
+  <script src="chat-widget.js" defer></script>
+
+</body>
+</html>

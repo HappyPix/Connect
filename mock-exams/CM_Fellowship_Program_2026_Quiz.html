@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The CM Fellowship Program 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--saffron:#FF9933;--navy:#0A1B3D;--gold:#C9A84C;--ivory:#FAF7F0;--green:#138808;--red:#DC2626;--light-bg:#F4F1E8;--card-bg:#FFFFFF;--text-dark:#1A1A2E;--text-mid:#4A4A6A;--border:#E2D9C8;--shadow:0 4px 24px rgba(10,27,61,0.10);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Source Sans 3',sans-serif;background:var(--light-bg);color:var(--text-dark);min-height:100vh;}
+
+/* COVER */
+#cover{min-height:100vh;background:linear-gradient(145deg,#0A1B3D 0%,#162B5B 60%,#0A1B3D 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;position:relative;overflow:hidden;}
+#cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 20%,rgba(255,153,51,0.13) 0%,transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(19,136,8,0.10) 0%,transparent 60%);}
+.ashoka-svg{width:80px;height:80px;margin-bottom:22px;animation:spin 20s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.cover-badge{background:rgba(255,153,51,0.15);border:1px solid var(--saffron);color:var(--saffron);font-size:11px;font-weight:700;letter-spacing:3px;padding:6px 20px;border-radius:2px;margin-bottom:18px;text-transform:uppercase;position:relative;z-index:1;}
+.cover-title{font-family:'Playfair Display',serif;font-size:clamp(26px,5.5vw,50px);font-weight:900;color:#FFF;text-align:center;line-height:1.15;margin-bottom:8px;position:relative;z-index:1;}
+.cover-title span{color:var(--saffron);}
+.cover-sub{font-size:15px;color:rgba(255,255,255,0.6);letter-spacing:1px;margin-bottom:32px;text-align:center;position:relative;z-index:1;}
+.cover-meta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:32px;position:relative;z-index:1;}
+.meta-chip{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.18);color:#fff;border-radius:4px;padding:10px 20px;font-size:13px;font-weight:600;}
+.cover-cats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:36px;max-width:660px;position:relative;z-index:1;}
+.cat-tag{background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.4);color:var(--gold);border-radius:3px;padding:5px 14px;font-size:11px;font-weight:700;}
+.start-btn{background:linear-gradient(135deg,var(--saffron),#E67E22);color:#fff;border:none;border-radius:4px;font-size:17px;font-weight:700;letter-spacing:1px;padding:16px 52px;cursor:pointer;box-shadow:0 4px 24px rgba(255,153,51,0.4);transition:transform 0.2s,box-shadow 0.2s;font-family:'Source Sans 3',sans-serif;position:relative;z-index:1;}
+.start-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(255,153,51,0.5);}
+.cover-footer{position:absolute;bottom:18px;font-size:11px;color:rgba(255,255,255,0.25);letter-spacing:1px;z-index:1;}
+
+/* QUIZ SHELL - hidden by default */
+#quiz-shell{display:none;flex-direction:column;min-height:100vh;}
+#quiz-shell.active{display:flex;}
+
+.quiz-header{background:var(--navy);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(10,27,61,0.4);}
+.qh-title{font-family:'Playfair Display',serif;color:#fff;font-size:18px;font-weight:700;}
+.qh-title span{color:var(--saffron);}
+.qh-right{display:flex;align-items:center;gap:18px;}
+.timer-box{background:rgba(255,255,255,0.08);border:1.5px solid var(--saffron);border-radius:4px;padding:6px 16px;color:var(--saffron);font-size:20px;font-weight:700;font-family:monospace;min-width:88px;text-align:center;}
+.timer-box.urgent{color:#FF4444;border-color:#FF4444;animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.55}}
+.q-counter{color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;}
+.prog-wrap{background:rgba(255,255,255,0.1);height:4px;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--saffron),var(--gold));transition:width 0.4s;}
+
+.quiz-body{flex:1;display:flex;flex-direction:column;max-width:860px;width:100%;margin:0 auto;padding:28px 20px 40px;}
+.cat-label{display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:var(--gold);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:2px;margin-bottom:14px;width:fit-content;}
+
+.question-card{background:var(--card-bg);border-radius:8px;box-shadow:var(--shadow);padding:28px 32px;border-left:4px solid var(--saffron);}
+.q-number{font-size:12px;font-weight:700;color:var(--saffron);letter-spacing:1px;margin-bottom:10px;text-transform:uppercase;}
+.q-text{font-size:17px;font-weight:600;color:var(--text-dark);line-height:1.65;margin-bottom:22px;}
+.options-list{display:flex;flex-direction:column;gap:10px;}
+.opt-lbl{display:flex;align-items:flex-start;gap:12px;padding:13px 18px;border-radius:6px;border:1.5px solid var(--border);cursor:pointer;transition:border-color 0.15s,background 0.15s;background:var(--ivory);user-select:none;}
+.opt-lbl:hover{border-color:var(--saffron);background:#FFF8EE;}
+.opt-lbl.selected{border-color:var(--saffron);background:#FFF3E0;box-shadow:0 0 0 2px rgba(255,153,51,0.18);}
+.opt-key{min-width:28px;height:28px;background:var(--navy);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.opt-lbl.selected .opt-key{background:var(--saffron);}
+.opt-text{font-size:15px;color:var(--text-dark);line-height:1.5;}
+
+.nav-row{display:flex;align-items:center;justify-content:space-between;margin-top:22px;flex-wrap:wrap;gap:12px;}
+.nav-btn{padding:11px 26px;border-radius:4px;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:'Source Sans 3',sans-serif;transition:all 0.15s;letter-spacing:0.5px;}
+.btn-prev{background:var(--ivory);color:var(--navy);border:1.5px solid var(--border);}
+.btn-prev:hover{background:#EDE7D6;}
+.btn-next{background:var(--navy);color:#fff;}
+.btn-next:hover{background:#162B5B;}
+.btn-submit{background:linear-gradient(135deg,var(--green),#0D6B06);color:#fff;}
+.btn-submit:hover{opacity:0.88;}
+.ans-count{font-size:13px;color:var(--text-mid);}
+
+.palette-wrap{background:var(--card-bg);border-radius:8px;box-shadow:var(--shadow);padding:18px;margin-top:22px;}
+.palette-title{font-size:11px;font-weight:700;color:var(--text-mid);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+.palette-grid{display:flex;flex-wrap:wrap;gap:5px;}
+.p-dot{width:30px;height:30px;border-radius:4px;border:1.5px solid var(--border);background:var(--ivory);color:var(--text-mid);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.12s;}
+.p-dot.answered{background:var(--saffron);border-color:var(--saffron);color:#fff;}
+.p-dot.cur{border-color:var(--navy);box-shadow:0 0 0 2px rgba(10,27,61,0.25);}
+.p-dot:hover{transform:scale(1.12);}
+
+/* RESULT SHELL */
+#result-shell{display:none;flex-direction:column;min-height:100vh;background:var(--light-bg);}
+#result-shell.active{display:flex;}
+.res-header{background:var(--navy);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.res-header h1{font-family:'Playfair Display',serif;color:#fff;font-size:22px;}
+.res-header h1 span{color:var(--saffron);}
+.retry-btn{padding:9px 24px;background:var(--saffron);color:#fff;border:none;border-radius:4px;font-weight:700;cursor:pointer;font-size:14px;font-family:'Source Sans 3',sans-serif;}
+.res-body{max-width:900px;width:100%;margin:0 auto;padding:28px 18px 60px;}
+
+.score-hero{background:var(--card-bg);border-radius:10px;box-shadow:var(--shadow);padding:36px;display:flex;flex-direction:column;align-items:center;margin-bottom:26px;text-align:center;border-top:5px solid var(--saffron);}
+.score-donut{width:130px;height:130px;margin-bottom:16px;}
+.score-label{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;margin-bottom:5px;}
+.score-pct-txt{font-size:15px;color:var(--text-mid);margin-bottom:16px;}
+.score-chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
+.sc{padding:10px 22px;border-radius:6px;font-size:14px;font-weight:700;}
+.sc.ok{background:#ECFDF5;color:var(--green);border:1.5px solid #A7F3D0;}
+.sc.ng{background:#FEF2F2;color:var(--red);border:1.5px solid #FECACA;}
+.sc.sk{background:#F9FAFB;color:#6B7280;border:1.5px solid #E5E7EB;}
+
+.cat-summary{background:var(--card-bg);border-radius:10px;box-shadow:var(--shadow);padding:26px;margin-bottom:26px;}
+.cat-summary h2{font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);margin-bottom:16px;}
+.csr{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+.csr-name{font-size:13px;font-weight:700;color:var(--text-dark);min-width:210px;}
+.csr-bar-wrap{flex:1;min-width:120px;background:#E8E0D0;border-radius:4px;height:10px;overflow:hidden;}
+.csr-bar{height:100%;border-radius:4px;transition:width 0.8s;}
+.csr-txt{font-size:13px;font-weight:700;color:var(--navy);min-width:55px;text-align:right;}
+.mini{font-size:11px;color:var(--text-mid);margin-left:3px;}
+
+.rev-sec{margin-bottom:18px;}
+.rev-cat-hdr{background:var(--navy);color:var(--gold);padding:12px 20px;border-radius:6px 6px 0 0;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;}
+.rev-q{background:var(--card-bg);padding:18px 22px;border-left:4px solid var(--border);border-bottom:1px solid #EEE;}
+.rev-q:last-child{border-radius:0 0 6px 6px;border-bottom:none;}
+.rev-q.cq{border-left-color:var(--green);}
+.rev-q.wq{border-left-color:var(--red);}
+.rev-q.sq{border-left-color:#9CA3AF;}
+.rq-num{font-size:11px;font-weight:700;color:var(--text-mid);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.rq-txt{font-size:15px;font-weight:600;color:var(--text-dark);margin-bottom:10px;line-height:1.5;}
+.rq-opts{display:flex;flex-direction:column;gap:5px;}
+.rq-opt{display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:7px 10px;border-radius:5px;color:var(--text-dark);}
+.rq-opt.oc{background:#ECFDF5;color:#065F46;font-weight:700;}
+.rq-opt.ow{background:#FEF2F2;color:#991B1B;font-weight:700;}
+.rq-ok{min-width:20px;height:20px;border-radius:50%;background:#E5E7EB;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;}
+.rq-opt.oc .rq-ok{background:var(--green);color:#fff;}
+.rq-opt.ow .rq-ok{background:var(--red);color:#fff;}
+.sbadge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;padding:2px 9px;border-radius:2px;text-transform:uppercase;margin-left:8px;}
+.sb-ok{background:#ECFDF5;color:var(--green);}
+.sb-ng{background:#FEF2F2;color:var(--red);}
+.sb-sk{background:#F3F4F6;color:#6B7280;}
+
+.legend-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:14px;}
+.leg{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;}
+.leg-dot{width:12px;height:12px;border-radius:3px;}
+
+@media(max-width:600px){
+  .question-card{padding:18px 14px;}
+  .quiz-header{padding:10px 14px;}
+  .qh-title{font-size:14px;}
+  .timer-box{font-size:15px;padding:5px 10px;}
+  .csr-name{min-width:100%;}
+}
+</style>
+</head>
+<body>
+
+<!-- =========== COVER =========== -->
+<div id="cover">
+  <svg class="ashoka-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="44" fill="none" stroke="#FF9933" stroke-width="4"/>
+    <circle cx="50" cy="50" r="6" fill="#FF9933"/>
+    <g stroke="#FF9933" stroke-width="1.8">
+      <line x1="50" y1="50" x2="50" y2="8"/>
+      <line x1="50" y1="50" x2="83.1" y2="27.7"/>
+      <line x1="50" y1="50" x2="80.9" y2="72.3"/>
+      <line x1="50" y1="50" x2="50" y2="92"/>
+      <line x1="50" y1="50" x2="16.9" y2="72.3"/>
+      <line x1="50" y1="50" x2="19.1" y2="27.7"/>
+      <line x1="50" y1="50" x2="8" y2="50"/>
+      <line x1="50" y1="50" x2="27.7" y2="16.9"/>
+      <line x1="50" y1="50" x2="72.3" y2="19.1"/>
+      <line x1="50" y1="50" x2="92" y2="50"/>
+      <line x1="50" y1="50" x2="72.3" y2="80.9"/>
+      <line x1="50" y1="50" x2="27.7" y2="83.1"/>
+    </g>
+  </svg>
+  <div class="cover-badge">AI Happy Pixels Present's</div>
+  <h1 class="cover-title">The <span>CM Fellowship</span><br>Program 2026</h1>
+  <p class="cover-sub">Mock Practice Examination</p>
+  <div class="cover-meta">
+    <div class="meta-chip">&#128221; 100 Questions</div>
+    <div class="meta-chip">&#127919; 100 Marks</div>
+    <div class="meta-chip">&#9201; 60 Minutes</div>
+    <div class="meta-chip">&#127760; English Medium</div>
+  </div>
+  <div class="cover-cats">
+    <span class="cat-tag">General Knowledge (20)</span>
+    <span class="cat-tag">Reasoning (20)</span>
+    <span class="cat-tag">English Language (5)</span>
+    <span class="cat-tag">Marathi Language (5)</span>
+    <span class="cat-tag">Information Technology (5)</span>
+    <span class="cat-tag">Quantitative Aptitude (10)</span>
+    <span class="cat-tag">Competencies (35)</span>
+  </div>
+  <button class="start-btn" onclick="startQuiz()">Begin Examination &#8594;</button>
+  <div class="cover-footer">AI Happy Pixels  &bull; Practice Exam </div>
+</div>
+
+<!-- =========== QUIZ SHELL =========== -->
+<div id="quiz-shell">
+  <div class="quiz-header">
+    <div class="qh-title">CM Fellowship <span>2026</span></div>
+    <div class="qh-right">
+      <span class="q-counter" id="q-counter">Q 1 / 100</span>
+      <div class="timer-box" id="timer">60:00</div>
+    </div>
+  </div>
+  <div class="prog-wrap"><div class="prog-fill" id="prog-fill" style="width:1%"></div></div>
+  <div class="quiz-body">
+    <div class="cat-label" id="cat-label">Category</div>
+    <div class="question-card">
+      <div class="q-number" id="q-number">Question 1 of 100</div>
+      <div class="q-text" id="q-text"></div>
+      <div class="options-list" id="options-list"></div>
+    </div>
+    <div class="nav-row">
+      <button class="nav-btn btn-prev" id="btn-prev" onclick="goQ(currentQ-1)">&#8592; Previous</button>
+      <span class="ans-count" id="ans-count">0 / 100 answered</span>
+      <button class="nav-btn btn-next" id="btn-next" onclick="nextAction()">Next &#8594;</button>
+    </div>
+    <div class="palette-wrap">
+      <div class="palette-title">Question Navigator &mdash; Click to jump</div>
+      <div class="legend-row">
+        <div class="leg"><div class="leg-dot" style="background:var(--saffron)"></div>Answered</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--ivory);border:1.5px solid var(--border)"></div>Not Answered</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--navy)"></div>Current</div>
+      </div>
+      <div class="palette-grid" id="palette-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- =========== RESULT SHELL =========== -->
+<div id="result-shell">
+  <div class="res-header">
+    <h1>CM Fellowship <span>2026</span> &mdash; Result</h1>
+    <button class="retry-btn" onclick="location.reload()">&#8617; Retake Exam</button>
+  </div>
+  <div class="res-body" id="res-body"></div>
+</div>
+
+<script>
+// ====================== QUESTIONS ======================
+var Q = [
+// ---- GENERAL KNOWLEDGE (20) ----
+{c:"General Knowledge",q:"Which city in Maharashtra was recently designated as a 'Smart City' under the Smart Cities Mission?",o:["Kolhapur","Solapur","Nashik","All of the above"],a:3},
+{c:"General Knowledge",q:"The 'Samruddhi Mahamarg' expressway connects Mumbai to which city?",o:["Pune","Aurangabad","Nagpur","Amravati"],a:2},
+{c:"General Knowledge",q:"Which scheme provides financial assistance of Rs. 1,500 per month to women aged 21–65 years in Maharashtra?",o:["Mahatma Phule Jan Arogya Yojana","Mukhyamantri Ladki Bahin Yojana","Namo Shetkari Mahasanman Nidhi","Lek Ladki Yojana"],a:1},
+{c:"General Knowledge",q:"India's Chandrayaan-3 mission successfully landed near the Moon's south pole in which month and year?",o:["July 2023","August 2023","September 2023","October 2023"],a:1},
+{c:"General Knowledge",q:"Which river forms the northern boundary of Maharashtra for a significant stretch?",o:["Godavari","Tapi","Wardha","Krishna"],a:1},
+{c:"General Knowledge",q:"The 'PM Vishwakarma Yojana' is primarily aimed at benefiting which group?",o:["Women entrepreneurs","Scheduled Tribe farmers","Traditional artisans and craftspeople","Urban youth"],a:2},
+{c:"General Knowledge",q:"Which district of Maharashtra has the largest area under orange cultivation?",o:["Nagpur","Amravati","Wardha","Buldana"],a:0},
+{c:"General Knowledge",q:"The 'Ayushman Bharat PM-JAY' scheme provides health cover of up to how much per family per year?",o:["Rs. 2 lakh","Rs. 3 lakh","Rs. 5 lakh","Rs. 10 lakh"],a:2},
+{c:"General Knowledge",q:"India hosted the G20 Summit in 2023 in which city?",o:["Mumbai","Bengaluru","New Delhi","Chennai"],a:2},
+{c:"General Knowledge",q:"Which Maharashtra district records the highest tribal population percentage?",o:["Gadchiroli","Nandurbar","Palghar","Nashik"],a:1},
+{c:"General Knowledge",q:"The 'Jal Jeevan Mission' aimed to provide tap water connections to all rural households by which year?",o:["2024","2025","2026","2028"],a:1},
+{c:"General Knowledge",q:"The Economic Survey 2024-25 projected India's GDP growth at approximately:",o:["5.4%","6.4%","7.4%","8.4%"],a:1},
+{c:"General Knowledge",q:"Which body is the primary regulator of the securities market in India?",o:["RBI","SEBI","IRDAI","NABARD"],a:1},
+{c:"General Knowledge",q:"Maharashtra's 'One District, One Product' (ODOP) initiative aims to promote:",o:["Digital infrastructure","Local products and crafts of each district","Agricultural exports","Smart cities"],a:1},
+{c:"General Knowledge",q:"'Viksit Bharat @2047' envisions India achieving which status by its centenary of independence?",o:["Nuclear superpower","Developed nation","Permanent UNSC member","Space superpower"],a:1},
+{c:"General Knowledge",q:"Which Indian city is headquarters of the Reserve Bank of India?",o:["New Delhi","Chennai","Kolkata","Mumbai"],a:3},
+{c:"General Knowledge",q:"The 'Namo Shetkari Mahasanman Nidhi' scheme provides farmers in Maharashtra with annual assistance of:",o:["Rs. 4,000","Rs. 6,000","Rs. 8,000","Rs. 12,000"],a:1},
+{c:"General Knowledge",q:"India's first underwater metro tunnel was inaugurated in which city?",o:["Mumbai","Chennai","Kolkata","Bengaluru"],a:2},
+{c:"General Knowledge",q:"Which state borders Maharashtra to the south-east?",o:["Telangana","Andhra Pradesh","Karnataka","Goa"],a:1},
+{c:"General Knowledge",q:"Maharashtra's Lek Ladki Yojana provides financial support of Rs. 1,01,000 upon a girl's reaching which age?",o:["16 years","18 years","21 years","25 years"],a:1},
+
+// ---- REASONING (20) ----
+{c:"Reasoning",q:"All managers are leaders. Priya is a manager. Which conclusion is definitely true?",o:["All leaders are managers","Priya is a leader","Priya is not a leader","Some leaders are not managers"],a:1},
+{c:"Reasoning",q:"In a row of 25 students, Aman is 9th from the left and Bina is 13th from the right. How many students are between them?",o:["2","3","4","5"],a:1},
+{c:"Reasoning",q:"Find the odd one out: 3, 6, 12, 24, 48, 98, 192",o:["48","98","192","24"],a:1},
+{c:"Reasoning",q:"A clock shows 4:20. What is the angle between the hour and minute hands?",o:["0 degrees","5 degrees","10 degrees","20 degrees"],a:2},
+{c:"Reasoning",q:"Inductive reasoning moves from:",o:["General principles to specific conclusions","Specific observations to general conclusions","Hypothesis to direct proof","Effect to cause"],a:1},
+{c:"Reasoning",q:"Ravi walks 6 km North, turns East and walks 8 km. How far is he from his starting point?",o:["10 km","12 km","14 km","6 km"],a:0},
+{c:"Reasoning",q:"Which is the best example of deductive reasoning?",o:["Every swan I've seen is white, so all swans are white","All fish breathe underwater. Sharks are fish. So sharks breathe underwater.","It rained yesterday and today, so it will rain tomorrow","This pill worked for my friend so it will work for me"],a:1},
+{c:"Reasoning",q:"If MANGO is coded as NBOIP, how is APPLE coded?",o:["BQQMF","AQQLF","BQQLE","BPQLF"],a:0},
+{c:"Reasoning",q:"Cause: A new dam was built across the river. Which effect is most directly logical?",o:["Rainfall in the region increased","Water availability for farmers downstream decreased","The village population doubled","Road connectivity improved"],a:1},
+{c:"Reasoning",q:"A sequence: 2, 6, 18, 54, ___. What comes next?",o:["108","162","216","324"],a:1},
+{c:"Reasoning",q:"Which best represents an inference based on inductive reasoning?",o:["The sun rose today because Earth rotates","Since every previous election winner in this constituency was from Party X, the next winner will likely be from Party X","If it rains, the ground gets wet; it rained, so ground is wet","A is greater than B; B is greater than C; therefore A is greater than C"],a:1},
+{c:"Reasoning",q:"If 'A + B' means A is the mother of B, and 'A - B' means A is the brother of B, what does P + R - Q mean?",o:["P is the aunt of Q","P is the mother of R who is the brother of Q","Q is P's nephew","Q is the son of P's brother"],a:1},
+{c:"Reasoning",q:"A causes B. B causes C. C causes D. Which is most reasonable?",o:["D causes A","A indirectly causes D","B is independent of A","D causes C"],a:1},
+{c:"Reasoning",q:"If all Bloops are Razzles and all Razzles are Lazzles, then:",o:["All Lazzles are Bloops","All Bloops are Lazzles","No Bloops are Lazzles","Some Lazzles are not Razzles"],a:1},
+{c:"Reasoning",q:"Choose the analogy: Doctor : Hospital :: Teacher : ___",o:["Student","School","Book","Knowledge"],a:1},
+{c:"Reasoning",q:"The number of diagonals in an octagon is:",o:["16","18","20","22"],a:2},
+{c:"Reasoning",q:"Effect: A village completely eliminated open defecation. Which is the most plausible direct cause?",o:["The village got electricity","All households were provided functional toilets under a government scheme","A new school was built","Road connectivity improved"],a:1},
+{c:"Reasoning",q:"In a series: A, C, F, J, O, ___. What comes next?",o:["T","U","V","W"],a:1},
+{c:"Reasoning",q:"Statement: 'No politician is honest. Ramrao is honest.' Conclusion: 'Ramrao is not a politician.' Is this valid?",o:["Yes, valid conclusion","No, does not follow","Cannot be determined","Partially follows"],a:0},
+{c:"Reasoning",q:"Which day comes two days before the day that is three days after Monday?",o:["Monday","Tuesday","Wednesday","Thursday"],a:1},
+
+// ---- ENGLISH LANGUAGE (5) ----
+{c:"English Language",q:"Choose the correctly punctuated sentence:",o:["Its a lovely, day outside.","It's a lovely day, outside.","It's a lovely day outside.","Its a lovely day outside."],a:2},
+{c:"English Language",q:"Identify the grammatical error: 'Each of the students have submitted their assignment.'",o:["Each of","the students","have submitted","their assignment"],a:2},
+{c:"English Language",q:"Choose the best synonym for 'Ubiquitous':",o:["Rare","Omnipresent","Uncertain","Transient"],a:1},
+{c:"English Language",q:"Which sentence correctly uses the passive voice?",o:["The committee decided the policy.","The policy was decided by the committee.","The policy decided the committee.","By the committee the policy decided."],a:1},
+{c:"English Language",q:"Choose the sentence that uses the correct article:",o:["She is best student in class.","She is a best student in class.","She is an best student in class.","She is the best student in class."],a:3},
+
+// ---- MARATHI LANGUAGE (5) ----
+{c:"Marathi Language",q:"'तो आम्हाला मदत करतो' या वाक्याचा इंग्रजीत अर्थ काय आहे? (Meaning of 'To aamhala madath karto'?)",o:["He helps us","He helped us","He will help us","We help him"],a:0},
+{c:"Marathi Language",q:"'विद्यार्थी' या शब्दाचे अनेकवचन काय होते? (Plural of 'Vidyarthi' in Marathi?)",o:["विद्यार्थी (no change)","विद्यार्थ्यांनी","विद्यार्थीगण","विद्यार्थ्यांना"],a:0},
+{c:"Marathi Language",q:"मराठी व्याकरणात 'नाम' (Naam) म्हणजे काय?",o:["Verb (क्रियापद)","Noun (नामपद)","Adjective (विशेषण)","Pronoun (सर्वनाम)"],a:1},
+{c:"Marathi Language",q:"'चंद्र पृथ्वीभोवती फिरतो' — या वाक्यातील कर्ता कोणता?",o:["पृथ्वी","फिरतो","चंद्र","भोवती"],a:2},
+{c:"Marathi Language",q:"'आकाश निळे आहे' — या वाक्यात विशेषण (adjective) कोणते?",o:["आकाश","निळे","आहे","या"],a:1},
+
+// ---- INFORMATION TECHNOLOGY (5) ----
+{c:"Information Technology",q:"In Microsoft PowerPoint, which shortcut inserts a new slide?",o:["Ctrl + N","Ctrl + M","Ctrl + Enter","Ctrl + D"],a:1},
+{c:"Information Technology",q:"In MS Excel, which function counts cells that meet a specific condition?",o:["COUNT","SUMIF","COUNTIF","COUNTA"],a:2},
+{c:"Information Technology",q:"What does 'AI Hallucination' mean in the context of Large Language Models?",o:["The model refuses to answer","The model generates factually wrong but confident-sounding responses","The model crashes due to overload","The model misunderstands the context"],a:1},
+{c:"Information Technology",q:"In MS Word, the 'Track Changes' feature is used for:",o:["Automatically changing fonts","Recording all edits made to a document for review","Tracking document file size changes","Auto-saving the document"],a:1},
+{c:"Information Technology",q:"Which of the following is the best example of Generative AI?",o:["Google Maps navigation","ChatGPT generating essay responses","Excel VLOOKUP function","Windows Defender antivirus scanning"],a:1},
+
+// ---- QUANTITATIVE APTITUDE (10) ----
+{c:"Quantitative Aptitude",q:"A train travels 360 km in 4 hours. What is its speed in m/s?",o:["20 m/s","25 m/s","30 m/s","90 m/s"],a:1},
+{c:"Quantitative Aptitude",q:"If an article's price is increased by 20% then decreased by 20%, the net effect is:",o:["0% change","2% decrease","4% decrease","4% increase"],a:2},
+{c:"Quantitative Aptitude",q:"Sales data — Q1: Rs.40L, Q2: Rs.60L, Q3: Rs.50L, Q4: Rs.70L. What is the average quarterly sales?",o:["Rs.50L","Rs.55L","Rs.60L","Rs.45L"],a:1},
+{c:"Quantitative Aptitude",q:"Solve for x: 3x + 7 = 22",o:["x = 4","x = 5","x = 6","x = 3"],a:1},
+{c:"Quantitative Aptitude",q:"Ratio of boys to girls in a class is 3:2. If there are 30 students, how many girls are there?",o:["10","12","15","18"],a:1},
+{c:"Quantitative Aptitude",q:"A pie chart: Education 25%, Health 30%, Infrastructure 35%, Others 10%. Total budget is Rs.200 crore. Amount spent on Health?",o:["Rs.50 cr","Rs.60 cr","Rs.70 cr","Rs.40 cr"],a:1},
+{c:"Quantitative Aptitude",q:"Area of a triangle with base 12 cm and height 9 cm is:",o:["54 cm2","108 cm2","48 cm2","36 cm2"],a:0},
+{c:"Quantitative Aptitude",q:"Simple interest on Rs.5,000 at 8% per annum for 3 years is:",o:["Rs.1,000","Rs.1,200","Rs.1,500","Rs.2,000"],a:1},
+{c:"Quantitative Aptitude",q:"If 15 workers complete a job in 12 days, how many days will 20 workers take?",o:["7 days","8 days","9 days","10 days"],a:2},
+{c:"Quantitative Aptitude",q:"Village populations: A=800, B=1200, C=900, D=1500. What % of total is village D?",o:["30.0%","33.3%","34.1%","34.7%"],a:3},
+
+// ---- COMPETENCIES (35) ----
+{c:"Competencies",q:"A district collector receives conflicting flood reports from two sources. What should be the FIRST action?",o:["Act on the senior official's report","Verify facts through direct field observation or trusted ground sources","Wait for more reports before acting","Immediately announce a relief camp"],a:1},
+{c:"Competencies",q:"Which BEST represents critical thinking?",o:["Accepting expert information without question","Evaluating evidence and reasoning before forming conclusions","Making decisions quickly based on intuition","Following precedent even when context differs"],a:1},
+{c:"Competencies",q:"A policy produces unintended negative consequences after wide implementation. The BEST approach is:",o:["Continue unchanged since it was officially approved","Collect data, analyse root causes, and adapt or revise the policy","Abandon the policy entirely","Blame the implementation team"],a:1},
+{c:"Competencies",q:"In decision-making, 'satisficing' means:",o:["Maximizing every possible outcome","Choosing an option that is good enough to meet minimum criteria","Delaying decisions until perfect information is available","Selecting the most expensive option"],a:1},
+{c:"Competencies",q:"A government scheme benefits 80% of the target group but harms 20%. A critical thinker would:",o:["Declare the scheme a complete success","Analyse the harm and seek modifications to address the affected 20%","Implement the scheme without any changes","Immediately scrap the scheme"],a:1},
+{c:"Competencies",q:"Which cognitive bias causes people to search for information that confirms their existing beliefs?",o:["Anchoring bias","Confirmation bias","Availability heuristic","Dunning-Kruger effect"],a:1},
+{c:"Competencies",q:"During a public health crisis, a district officer chooses between: A) Proven but slow intervention, B) Faster but less tested method. The BEST decision-making approach is:",o:["Always choose the proven method","Always choose the faster method","Analyse risk, urgency, evidence and resources before deciding","Defer entirely to political leadership"],a:2},
+{c:"Competencies",q:"Stakeholder mapping in problem-solving is used to:",o:["Identify which departments have the largest budgets","Understand all parties affected by and influencing a situation","Create an organizational chart","Schedule meeting timings"],a:1},
+{c:"Competencies",q:"The '5 Whys' root cause analysis technique involves:",o:["Identifying 5 possible solutions","Asking 'why' repeatedly (typically 5 times) to reach the root cause","Consulting 5 stakeholders","Creating 5 implementation steps"],a:1},
+{c:"Competencies",q:"A CM Fellow finds a scheme effective in one area but ineffective in another. The BEST problem-solving approach is:",o:["Assume it is an operations failure and replace staff","Conduct comparative analysis to identify differences between the two areas","Report to superiors and wait for instructions","Expand the ineffective approach statewide"],a:1},
+{c:"Competencies",q:"A 'wicked problem' in public policy is characterized by:",o:["A clear start and definite end","A single well-defined correct solution","Multiple stakeholders with conflicting values and no clear solution","Being solvable by a single department"],a:2},
+{c:"Competencies",q:"A CM Fellow finds data suggesting a programme is failing, but their supervisor believes it is succeeding. The most appropriate action is:",o:["Suppress the data to avoid conflict","Present the data respectfully with analysis and possible interpretations","Leak the data to the media","Quietly abandon the analysis"],a:1},
+{c:"Competencies",q:"The PDCA cycle stands for:",o:["Plan, Do, Check, Act","Prepare, Deploy, Control, Assess","Plan, Decide, Confirm, Analyse","Process, Design, Create, Approve"],a:0},
+{c:"Competencies",q:"Ethical decision-making in public service primarily requires prioritizing:",o:["Career advancement","Organizational reputation","Public interest and equity","Political alignment"],a:2},
+{c:"Competencies",q:"Design thinking in public policy primarily focuses on:",o:["Budget optimization","Human-centered problem framing and iterative prototyping","Legal compliance","Precedent-based decision-making"],a:1},
+{c:"Competencies",q:"A fellow notices two departments duplicating efforts on the same project, wasting resources. Critical thinking suggests:",o:["Ignore it as it is not your mandate","Report it in your exit report months later","Proactively flag it and suggest coordination mechanisms","Ask one department to stop without consultation"],a:2},
+{c:"Competencies",q:"Which is the BEST example of systems thinking?",o:["Solving traffic congestion only by widening roads","Analysing how land use, public transport, planning and commuter behaviour interact to cause congestion","Reducing traffic by increasing toll taxes only","Banning vehicles on alternate days"],a:1},
+{c:"Competencies",q:"When multiple equally good options exist, the MOST rational decision-making approach is to:",o:["Always choose the cheapest option","Select randomly to save time","Evaluate options against defined criteria and prioritize based on goals","Choose the option proposed by the most senior person"],a:2},
+{c:"Competencies",q:"'Bounded rationality' in decision-making means:",o:["All decisions are perfectly rational","Rational decisions are impossible in government","Decision-makers have limited information, time and capacity, leading to satisficing rather than optimizing","Decisions must be bounded by law"],a:2},
+{c:"Competencies",q:"A CM Fellow is tasked with improving school attendance in tribal areas. Which approach BEST reflects problem-solving practice?",o:["Implement a uniform attendance policy for all schools","Conduct field research, engage tribal communities to understand barriers, then co-design targeted solutions","Increase teacher salaries statewide","Issue circular warnings to absent students"],a:1},
+{c:"Competencies",q:"Which of the following is an example of a LEADING indicator in performance management?",o:["Total number of complaints received last month","Number of training sessions conducted for frontline workers","Budget spent in the previous quarter","Number of beneficiaries enrolled last year"],a:1},
+{c:"Competencies",q:"A policymaker uses only the most recent dramatic event to estimate the likelihood of a future risk. This is an example of:",o:["Confirmation bias","Anchoring bias","Availability heuristic","Optimism bias"],a:2},
+{c:"Competencies",q:"Which problem-solving step comes FIRST in a structured approach?",o:["Generating solutions","Implementing the best solution","Clearly defining and understanding the problem","Evaluating outcomes"],a:2},
+{c:"Competencies",q:"'Devil's Advocate' technique in group decision-making is used to:",o:["Select the most popular option","Deliberately challenge the dominant view to uncover weaknesses","Avoid conflict within the team","Speed up the decision process"],a:1},
+{c:"Competencies",q:"A CM Fellow notices that scheme data is collected but never analysed or used. The BEST response is:",o:["Continue collecting data as mandated","Propose a data utilization framework and flag the gap to supervisors","Stop data collection since it is unused","Share the data with media to create pressure"],a:1},
+{c:"Competencies",q:"Which approach BEST reflects evidence-based policy-making?",o:["Designing policies based on the ruling party's manifesto alone","Using pilot study results, research and field data to design and refine policies","Relying solely on expert opinions","Following policies implemented in other states without adaptation"],a:1},
+{c:"Competencies",q:"A 'pre-mortem' analysis in decision-making involves:",o:["Reviewing what went wrong after a project fails","Imagining a future project has failed and working backwards to identify what could have caused it","Conducting a financial audit before approval","Assigning blame before a project begins"],a:1},
+{c:"Competencies",q:"Which is the MOST important quality for effective inter-departmental coordination in government?",o:["Strict adherence to hierarchy","Mutual trust, clear communication and shared goals","Competitive departmental budgeting","Rapid unilateral decision-making"],a:1},
+{c:"Competencies",q:"When should a CM Fellow escalate a problem to a higher authority?",o:["Whenever they feel uncertain","Only when it is politically sensitive","When the problem is beyond their mandate, authority or resources despite efforts","Never, they should resolve everything independently"],a:2},
+{c:"Competencies",q:"The primary purpose of a Theory of Change (ToC) in a government programme is:",o:["To create a budget allocation chart","To articulate how and why a set of activities will lead to desired outcomes","To assign departmental responsibilities","To track employee performance"],a:1},
+{c:"Competencies",q:"Which statement BEST describes the difference between an output and an outcome in programme management?",o:["They are the same thing","An output is the direct product of activities; an outcome is the change or benefit that results","An outcome is the direct product of activities; an output is the long-term change","Outputs are measured; outcomes are not"],a:1},
+{c:"Competencies",q:"A CM Fellow is designing an intervention for malnourished children. Which approach reflects the BEST critical thinking?",o:["Distribute food supplements to all children equally","Identify the root causes of malnutrition in each community and design targeted multi-sectoral responses","Replicate the intervention used in another district without modification","Increase the budget for existing food distribution schemes"],a:1},
+{c:"Competencies",q:"Which bias can be BEST addressed by consulting a diverse group of stakeholders before making a decision?",o:["In-group bias / groupthink","Sunk cost fallacy","Anchoring bias","Recency bias"],a:0},
+{c:"Competencies",q:"A CM Fellow discovers that community members are not using a newly built health centre. The MOST effective first step is:",o:["Issue notices to non-users","Conduct community meetings to understand the reasons for non-utilization","Close the centre and rebuild elsewhere","File a report recommending disciplinary action"],a:1},
+{c:"Competencies",q:"In public policy, 'nudge theory' refers to:",o:["Forcing citizens to comply with regulations","Using financial penalties to change behaviour","Designing choice environments that guide people towards beneficial decisions without restricting freedom","Issuing directives through official orders"],a:2}
+];
+
+// ====================== STATE ======================
+var currentQ = 0;
+var answers = new Array(Q.length).fill(null);
+var timerInt, timeLeft = 3600;
+var submitted = false;
+
+// ====================== START ======================
+function startQuiz() {
+  document.getElementById('cover').style.display = 'none';
+  document.getElementById('quiz-shell').classList.add('active');
+  buildPalette();
+  showQ(0);
+  startTimer();
+}
+
+function startTimer() {
+  timerInt = setInterval(function() {
+    timeLeft--;
+    var m = Math.floor(timeLeft / 60);
+    var s = timeLeft % 60;
+    var el = document.getElementById('timer');
+    el.textContent = pad(m) + ':' + pad(s);
+    if (timeLeft <= 300) el.classList.add('urgent');
+    if (timeLeft <= 0) { clearInterval(timerInt); doSubmit(); }
+  }, 1000);
+}
+
+function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+// ====================== PALETTE ======================
+function buildPalette() {
+  var g = document.getElementById('palette-grid');
+  g.innerHTML = '';
+  for (var i = 0; i < Q.length; i++) {
+    (function(i) {
+      var d = document.createElement('div');
+      d.className = 'p-dot';
+      d.id = 'pd' + i;
+      d.textContent = i + 1;
+      d.onclick = function() { goQ(i); };
+      g.appendChild(d);
+    })(i);
+  }
+}
+
+function updatePalette() {
+  for (var i = 0; i < Q.length; i++) {
+    var d = document.getElementById('pd' + i);
+    if (!d) continue;
+    d.className = 'p-dot' + (answers[i] !== null ? ' answered' : '') + (i === currentQ ? ' cur' : '');
+  }
+}
+
+// ====================== SHOW QUESTION ======================
+var KEYS = ['A','B','C','D'];
+var EMOJIS = {"General Knowledge":"GK","Reasoning":"RL","English Language":"EN","Marathi Language":"MR","Information Technology":"IT","Quantitative Aptitude":"QA","Competencies":"CM"};
+
+function showQ(idx) {
+  currentQ = idx;
+  var q = Q[idx];
+  document.getElementById('cat-label').textContent = q.c;
+  document.getElementById('q-number').textContent = 'Question ' + (idx + 1) + ' of ' + Q.length;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('q-counter').textContent = 'Q ' + (idx + 1) + ' / ' + Q.length;
+  document.getElementById('prog-fill').style.width = (((idx + 1) / Q.length) * 100) + '%';
+
+  var ol = document.getElementById('options-list');
+  ol.innerHTML = '';
+  for (var oi = 0; oi < q.o.length; oi++) {
+    (function(oi) {
+      var lbl = document.createElement('div');
+      lbl.className = 'opt-lbl' + (answers[idx] === oi ? ' selected' : '');
+      lbl.id = 'opt' + oi;
+      lbl.innerHTML = '<div class="opt-key">' + KEYS[oi] + '</div><div class="opt-text">' + q.o[oi] + '</div>';
+      lbl.onclick = function() { selectAns(idx, oi); };
+      ol.appendChild(lbl);
+    })(oi);
+  }
+
+  document.getElementById('btn-prev').style.visibility = idx === 0 ? 'hidden' : 'visible';
+  var nb = document.getElementById('btn-next');
+  if (idx === Q.length - 1) {
+    nb.textContent = 'Submit Exam';
+    nb.className = 'nav-btn btn-submit';
+  } else {
+    nb.textContent = 'Next \u2192';
+    nb.className = 'nav-btn btn-next';
+  }
+
+  updatePalette();
+  updateCount();
+}
+
+function selectAns(qIdx, optIdx) {
+  answers[qIdx] = optIdx;
+  var opts = document.querySelectorAll('.opt-lbl');
+  for (var i = 0; i < opts.length; i++) {
+    opts[i].classList.toggle('selected', i === optIdx);
+  }
+  updatePalette();
+  updateCount();
+}
+
+function updateCount() {
+  var cnt = 0;
+  for (var i = 0; i < answers.length; i++) { if (answers[i] !== null) cnt++; }
+  document.getElementById('ans-count').textContent = cnt + ' / ' + Q.length + ' answered';
+}
+
+function goQ(idx) {
+  if (idx < 0 || idx >= Q.length) return;
+  showQ(idx);
+}
+
+function nextAction() {
+  if (currentQ < Q.length - 1) {
+    goQ(currentQ + 1);
+  } else {
+    var unanswered = 0;
+    for (var i = 0; i < answers.length; i++) { if (answers[i] === null) unanswered++; }
+    if (unanswered > 0) {
+      if (!confirm('You have ' + unanswered + ' unanswered question(s).\nUnanswered questions will be marked wrong.\n\nClick OK to submit or Cancel to review.')) return;
+    }
+    doSubmit();
+  }
+}
+
+// ====================== SUBMIT ======================
+function doSubmit() {
+  if (submitted) return;
+  submitted = true;
+  clearInterval(timerInt);
+  document.getElementById('quiz-shell').classList.remove('active');
+  document.getElementById('quiz-shell').style.display = 'none';
+  document.getElementById('result-shell').classList.add('active');
+  buildResult();
+}
+
+// ====================== RESULT ======================
+function buildResult() {
+  var correct = 0, wrong = 0, skipped = 0;
+  var catMap = {};
+  for (var i = 0; i < Q.length; i++) {
+    var cat = Q[i].c;
+    if (!catMap[cat]) catMap[cat] = {total:0,correct:0,wrong:0,skip:0};
+    catMap[cat].total++;
+    if (answers[i] === null) { skipped++; catMap[cat].skip++; }
+    else if (answers[i] === Q[i].a) { correct++; catMap[cat].correct++; }
+    else { wrong++; catMap[cat].wrong++; }
+  }
+
+  var pct = Math.round((correct / Q.length) * 100);
+  var grade = pct >= 80 ? 'Outstanding' : pct >= 65 ? 'Excellent' : pct >= 50 ? 'Good' : pct >= 35 ? 'Average' : 'Below Average';
+  var gradeCol = pct >= 65 ? '#138808' : pct >= 50 ? '#D97706' : '#DC2626';
+
+  // SVG donut
+  var r = 52, cx = 65, cy = 65, circ = 2 * Math.PI * r;
+  var filled = circ * (pct / 100);
+  var donutSVG = '<svg class="score-donut" viewBox="0 0 130 130" xmlns="http://www.w3.org/2000/svg">'
+    + '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="#E8E0D0" stroke-width="12"/>'
+    + '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="' + gradeCol + '" stroke-width="12"'
+    + ' stroke-dasharray="' + filled + ' ' + (circ - filled) + '"'
+    + ' stroke-linecap="round" transform="rotate(-90 ' + cx + ' ' + cy + ')"/>'
+    + '<text x="' + cx + '" y="' + (cy - 8) + '" text-anchor="middle" font-size="28" font-weight="900" font-family="serif" fill="#0A1B3D">' + correct + '</text>'
+    + '<text x="' + cx + '" y="' + (cy + 14) + '" text-anchor="middle" font-size="12" fill="#4A4A6A">out of 100</text>'
+    + '</svg>';
+
+  var html = '<div class="score-hero">' + donutSVG
+    + '<div class="score-label" style="color:' + gradeCol + '">' + grade + '</div>'
+    + '<div class="score-pct-txt">You scored <strong>' + correct + '%</strong> &mdash; ' + (pct >= 50 ? 'Congratulations, you have passed!' : 'Better luck next time!') + '</div>'
+    + '<div class="score-chips">'
+    + '<div class="sc ok">&#10003; Correct: ' + correct + '</div>'
+    + '<div class="sc ng">&#10007; Wrong: ' + wrong + '</div>'
+    + '<div class="sc sk">&mdash; Skipped: ' + skipped + '</div>'
+    + '</div></div>';
+
+  // Category summary
+  html += '<div class="cat-summary"><h2>&#128202; Category-wise Performance</h2>';
+  var catOrder = ["General Knowledge","Reasoning","English Language","Marathi Language","Information Technology","Quantitative Aptitude","Competencies"];
+  for (var ci = 0; ci < catOrder.length; ci++) {
+    var cat = catOrder[ci];
+    if (!catMap[cat]) continue;
+    var d = catMap[cat];
+    var cp = Math.round((d.correct / d.total) * 100);
+    var bc = cp >= 60 ? '#138808' : cp >= 40 ? '#FF9933' : '#DC2626';
+    html += '<div class="csr">'
+      + '<div class="csr-name">' + cat + ' <span class="mini">(' + d.total + ' Qs)</span></div>'
+      + '<div class="csr-bar-wrap"><div class="csr-bar" style="width:' + cp + '%;background:' + bc + '"></div></div>'
+      + '<div class="csr-txt">' + d.correct + '/' + d.total + ' <span class="mini">' + cp + '%</span></div>'
+      + '</div>';
+  }
+  html += '</div>';
+
+  // Detailed review
+  html += '<h2 style="font-family:\'Playfair Display\',serif;font-size:21px;color:#0A1B3D;margin-bottom:16px;">&#128203; Detailed Answer Review</h2>';
+  for (var ci = 0; ci < catOrder.length; ci++) {
+    var cat = catOrder[ci];
+    var catQs = [];
+    for (var qi = 0; qi < Q.length; qi++) { if (Q[qi].c === cat) catQs.push(qi); }
+    if (catQs.length === 0) continue;
+    var catC = 0;
+    for (var k = 0; k < catQs.length; k++) { if (answers[catQs[k]] === Q[catQs[k]].a) catC++; }
+    html += '<div class="rev-sec">'
+      + '<div class="rev-cat-hdr"><span>' + cat + '</span><span>' + catC + '/' + catQs.length + ' correct</span></div>';
+    for (var k = 0; k < catQs.length; k++) {
+      var qi = catQs[k];
+      var ua = answers[qi];
+      var isC = ua === Q[qi].a;
+      var isSk = ua === null;
+      var rowCls = isSk ? 'sq' : isC ? 'cq' : 'wq';
+      var badge = isSk
+        ? '<span class="sbadge sb-sk">Skipped</span>'
+        : isC ? '<span class="sbadge sb-ok">&#10003; Correct</span>'
+              : '<span class="sbadge sb-ng">&#10007; Wrong</span>';
+      html += '<div class="rev-q ' + rowCls + '">'
+        + '<div class="rq-num">Q' + (qi + 1) + ' ' + badge + '</div>'
+        + '<div class="rq-txt">' + Q[qi].q + '</div>'
+        + '<div class="rq-opts">';
+      for (var oi = 0; oi < Q[qi].o.length; oi++) {
+        var cls2 = '';
+        var suffix = '';
+        if (oi === Q[qi].a) { cls2 = 'oc'; suffix = ' <strong>&#10003; Correct Answer</strong>'; }
+        else if (oi === ua && !isC) { cls2 = 'ow'; suffix = ' <strong>&#10007; Your Answer</strong>'; }
+        html += '<div class="rq-opt ' + cls2 + '"><div class="rq-ok">' + KEYS[oi] + '</div><span>' + Q[qi].o[oi] + suffix + '</span></div>';
+      }
+      html += '</div></div>';
+    }
+    html += '</div>';
+  }
+
+  document.getElementById('res-body').innerHTML = html;
+}
+</script>
+</body>
+</html>
