@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#11162a">
+<title>Connect Happypix AI Receptionist</title>
+<style>
+:root{--bg:#0b1020;--panel:#141b31;--gold:#f6c969;--ink:#f5f7ff;--muted:#b7c0d8;--line:#2b3554;--green:#55d6a5}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#202b4d 0,#0b1020 55%);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}
+a{color:var(--gold)}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 15px;font-weight:650;background:var(--gold);color:#1a1a1a}button.secondary{background:#27314f;color:var(--ink);border:1px solid #3a4668}button:disabled{opacity:.5;cursor:not-allowed}
+.wrap{max-width:1100px;margin:auto;padding:24px 16px 50px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.brand{font-weight:850;letter-spacing:.3px}.brand span{color:var(--gold)}.pill{font-size:12px;border:1px solid #3b486b;border-radius:30px;padding:6px 10px;color:var(--muted)}
+.hero{text-align:center;padding:35px 0 24px}.orb{width:78px;height:78px;margin:auto auto 14px;border-radius:26px;background:linear-gradient(135deg,#ffe7a1,#bd8428);display:grid;place-items:center;font-size:37px;box-shadow:0 0 45px #f6c96930}.hero h1{font-size:clamp(27px,5vw,44px);line-height:1.1;margin:10px 0}.hero p{max-width:700px;margin:12px auto;color:var(--muted)}.layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);gap:18px;align-items:start}.panel{background:#141b31eF;border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 18px 45px #0002}.panel h2{margin:0 0 5px;font-size:20px}.sub{margin:0 0 14px;color:var(--muted);font-size:14px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.toolbar select{background:#202a47;color:var(--ink);border:1px solid #3a4668;border-radius:10px;padding:10px}.chat{height:350px;overflow:auto;border:1px solid var(--line);border-radius:14px;padding:12px;background:#0c1224;display:flex;flex-direction:column;gap:10px}.msg{max-width:90%;padding:10px 12px;border-radius:14px;white-space:pre-wrap;overflow-wrap:anywhere}.bot{align-self:flex-start;background:#202a47}.user{align-self:flex-end;background:#4a3b20;color:#fff4d7}.status{font-size:12px;color:var(--muted);min-height:20px;padding:6px 2px}.compose{display:flex;gap:8px;margin-top:10px}.compose input{flex:1;min-width:0;background:#0c1224;color:var(--ink);border:1px solid #3a4668;border-radius:12px;padding:12px}.voice-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.field{display:grid;gap:5px;margin:10px 0}.field label{font-size:13px;color:var(--muted)}.field input,.field textarea,.field select{width:100%;background:#0c1224;color:var(--ink);border:1px solid #3a4668;border-radius:10px;padding:11px}.field textarea{min-height:72px;resize:vertical}.consent{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--muted);margin:12px 0}.consent input{margin-top:5px}.links{display:grid;gap:8px}.linkcard{border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:#0e1529}.linkcard b{display:block}.linkcard small{color:var(--muted)}.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:20px}.note{font-size:12px;color:var(--muted);margin-top:12px}.success{color:var(--green)}@media(max-width:760px){.layout{grid-template-columns:1fr}.chat{height:300px}.hero{padding-top:24px}.wrap{padding:16px 12px 35px}}
+</style>
+</head>
+<body><main class="wrap">
+<header class="top"><div class="brand">Connect <span>Happypix</span></div><div class="pill">AI Receptionist · 24/7 · English · हिंदी · मराठी</div></header>
+<section class="hero"><div class="orb">✦</div><h1>Where Every Connection<br>Becomes a Happy Customer.</h1><p>Your multilingual AI receptionist can explain our services, help you explore AI Happy Pixels learning resources, and capture your enquiry. Choose a language and start chatting or try voice mode.</p></section>
+<div class="layout">
+<section class="panel">
+<h2>Talk to our AI Assistant</h2><p class="sub">AI-powered support for your business questions.</p>
+<div class="toolbar"><select id="language" aria-label="Choose language"><option value="en-IN">English</option><option value="mr-IN">मराठी</option><option value="hi-IN">हिंदी</option></select><button id="clear" class="secondary">New chat</button></div>
+<div id="chat" class="chat" aria-live="polite"><div class="msg bot">Hello! Welcome to Connect Happypix. I can help with AI voice assistants, WhatsApp chatbots, websites, workflow automation, quotations, and free AI learning resources. What would you like to explore?</div></div>
+<div id="status" class="status">Ready to help.</div>
+<form id="chatForm" class="compose"><input id="message" autocomplete="off" placeholder="Type your question…" aria-label="Message"><button type="submit" id="send">Send</button></form>
+<div class="voice-row"><button id="listen" class="secondary">🎙 Start voice input</button><button id="stopVoice" class="secondary">■ Stop voice</button><button id="speakToggle" class="secondary" aria-pressed="true">🔊 Voice replies on</button></div>
+<p class="note">Voice input uses your browser's speech recognition, which may vary by device and language. Microphone access requires HTTPS and your permission.</p>
+</section>
+<aside class="panel">
+<h2>Request a callback / quote</h2><p class="sub">Share only what you are comfortable sharing. We will use it to respond to your enquiry.</p>
+<form id="leadForm">
+<div class="field"><label for="name">Your name *</label><input id="name" name="name" required maxlength="100" autocomplete="name"></div>
+<div class="field"><label for="phone">Mobile / WhatsApp *</label><input id="phone" name="phone" required maxlength="25" autocomplete="tel" placeholder="+91…"></div>
+<div class="field"><label for="business">Business / institute name</label><input id="business" name="business" maxlength="150"></div>
+<div class="field"><label for="city">City / district</label><input id="city" name="city" maxlength="100" autocomplete="address-level2"></div>
+<div class="field"><label for="need">What do you need?</label><select id="need" name="need"><option>AI Voice Assistant / Front Desk</option><option>WhatsApp Chatbot</option><option>Automated Website / Website Agent</option><option>Workflow Automation</option><option>Lead Generation</option><option>AI Promotional Video / Content</option><option>AI Happy Pixels learning resources</option><option>Not sure — please advise</option></select></div>
+<div class="field"><label for="details">Brief requirements</label><textarea id="details" name="details" maxlength="1200" placeholder="Tell us what you want to automate…"></textarea></div>
+<label class="consent"><input type="checkbox" id="consent" required><span>I consent to Connect Happypix using these details to respond to this enquiry. *</span></label>
+<button type="submit" id="leadSubmit">Send enquiry</button><div id="leadStatus" class="status" role="status"></div>
+</form>
+<div class="note">Prefer WhatsApp? <a href="https://wa.me/919960641173" target="_blank" rel="noopener">Message Connect Happypix</a></div>
+</aside>
+</div>
+<section class="panel" style="margin-top:18px"><h2>Explore services & free learning</h2><p class="sub">Quick links for visitors.</p><div class="links">
+<a class="linkcard" href="https://happypix.github.io/Connect/#services"><b>AI Automation Services</b><small>Voice assistants, WhatsApp chatbots, websites and workflow automation.</small></a>
+<a class="linkcard" href="https://happypix.github.io/Connect/#quote"><b>Get a custom quote</b><small>Pricing depends on your workflows, volume and goals.</small></a>
+<a class="linkcard" href="https://happypix.github.io/AIHappyPix/"><b>AI Happy Pixels</b><small>Explore AI learning, tools, courses, videos and practice resources.</small></a>
+<a class="linkcard" href="https://www.youtube.com/@AIhappypixels"><b>AI Happy Pixels on YouTube</b><small>Videos, shorts, podcasts and live learning.</small></a>
+</div></section>
+<footer class="foot">Connect Happypix · Founded by Vinod Sakhare · Maharashtra, India<br>AI can make mistakes. Confirm important details with our team. Do not share passwords or sensitive personal information.</footer>
+</main>
+<script src="./config.js"></script><script src="./app.js"></script>
+</body></html>
